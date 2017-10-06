@@ -29,7 +29,7 @@ If I tap the drone with my hand it should correct itself
 
 ## Run
 ```
-ava install --global
+npm install ava --global
 npm install
 npm test   # or   npm run test:watch
 ```
