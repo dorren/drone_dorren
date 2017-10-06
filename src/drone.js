@@ -49,12 +49,26 @@ class Drone {
   // drone's location, speed, etc.
   update_drone_stats(){
     this.update_location(new_location);
+    this.update_sensor();
     this.update_battery();  // send drone info to remote maybe
   }
 
   update_location(newLoc){
     this.gyro.update_speed(this.location, newLoc);
     this.location = newLoc;
+  }
+
+  update_sensor(){
+    let pitch_info = {}; // collected from real sensor.
+    let roll_info = {};
+    this.sensor.update_pitch(pitch_info);
+    this.sensor.update_roll(roll_info);
+  }
+
+  // react to sensor update
+  on_sensor_update(sensor){
+    // sensor.pitch
+    // sensor.roll
   }
 
   // connect with remote control
@@ -77,12 +91,31 @@ class Drone {
     }
   }
 
-  // when drone receives signal from remote, or from sensors.
+  // when drone receives signal from remote,
   on_signal(signal_type, amount){
+    // amount positive, nose up.
+    // engine location on the drone.
+    //       4
+    //     /   \
+    //    3     1
+    //     \  /
+    //      2
     if(signal_type === Remote.signals().pitch){
-      this.sensor.pitch(amount);
+      if(amount > 0){
+        this.drone.engines[4].power_up(amount); // gradually
+        this.drone.engines[2].power_down(amount);
+      }else{ //tail up
+        this.drone.engines[4].power_down(amount);
+        this.drone.engines[2].power_up(amount);
+      }
     }else if(signal_type === Remote.signals().roll){
-      this.sensor.roll(amount);
+      if(amount > 0){
+        this.drone.engines[3].power_up(amount); // gradually
+        this.drone.engines[1].power_down(amount);
+      }else{
+        this.drone.engines[3].power_down(amount);
+        this.drone.engines[1].power_up(amount);
+      }
     }else if(signal_type === Remote.signals().forward){
       let engines = [this.engines[0], this.engines[1], this.engines[2]];
       engines.map(engine => engine.power_up(amount));

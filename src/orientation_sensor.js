@@ -1,36 +1,18 @@
 class OrientationSensor {
   constructor(drone){
     this.drone = drone;
+    this.pitch = null;
+    this.roll = null;
   }
 
-  // amount positive, nose up.
-  // engine location on the drone.
-  //       4
-  //     /   \
-  //    3     1
-  //     \  /
-  //      2
-  pitch(amount){
-    if(amount > 0){
-      this.drone.engines[4].power_up(amount); // gradually
-      this.drone.engines[2].power_down(amount);
-    }else{ //tail up
-      this.drone.engines[4].power_down(amount);
-      this.drone.engines[2].power_up(amount);
-    }
+  update_pitch(val){
+    this.pitch = val;
+    drone.on_sensor_update(this);
   }
 
-  /**
-   * @param amount, positive roll right, negative to left
-   */
-  roll(amount){
-    if(amount > 0){
-      this.drone.engines[3].power_up(amount); // gradually
-      this.drone.engines[1].power_down(amount);
-    }else{ //tail up
-      this.drone.engines[3].power_down(amount);
-      this.drone.engines[1].power_up(amount);
-    }
+  update_roll(val){
+    this.roll = val;
+    drone.on_sensor_update(this);
   }
 }
 
