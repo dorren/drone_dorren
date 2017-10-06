@@ -1,0 +1,31 @@
+{
+  "name": "drone",
+  "version": "1.0.0",
+  "description": "drone simulation",
+  "main": "index.js",
+  "scripts": {
+    "production": "webpack -p",
+    "start": "webpack-dev-server",
+    "test": "ava",
+    "test:watch": "ava --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "html-webpack-plugin": "^2.22.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/*_test.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  }
+}
